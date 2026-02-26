@@ -72,5 +72,8 @@ curl -I https://opnstre.am.ddev.site/test-slug
 - **Rewrite rule**: `^([a-zA-Z0-9]+)/?$` — broad regex is safe because this is a dedicated installation
 - **301 redirects**: permanent redirects, standard for link shorteners
 - **dbDelta()**: requires two spaces before PRIMARY KEY, each field on its own line
-- **%i placeholder**: WordPress 6.2+ identifier placeholder for table names in `$wpdb->prepare()`
+- **%i placeholder**: WordPress 6.2+ identifier placeholder for table/column names in `$wpdb->prepare()`
+- **ORDER BY pattern**: Use `%i` for the column name and hardcode `ASC`/`DESC` as SQL keywords (branch into separate queries). Do not use `sanitize_sql_orderby()` with string interpolation — the plugin check sniff loses variable sanitization tracking on reassignment.
+- **phpcs multi-line suppression**: Use `phpcs:disable`/`phpcs:enable` blocks instead of `phpcs:ignore` for multi-line `$wpdb` statements. `phpcs:ignore` only covers the next line.
 - **Clean uninstall**: drops the database table and deletes options on plugin deletion
+- **Plugin check target**: 0 errors, 0 warnings from `ddev wp plugin check openstream-link-shortener`
