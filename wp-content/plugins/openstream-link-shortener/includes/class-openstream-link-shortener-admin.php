@@ -28,6 +28,8 @@ class Openstream_Link_Shortener_Admin {
 	 */
 	public static function init() {
 		add_action( 'admin_menu', array( __CLASS__, 'register_menu' ), 99 );
+		add_action( 'admin_menu', array( __CLASS__, 'register_settings_page' ), 99 );
+		add_action( 'admin_init', array( __CLASS__, 'register_settings' ) );
 		add_action( 'admin_init', array( __CLASS__, 'redirect_dashboard' ) );
 		add_action( 'admin_init', array( __CLASS__, 'handle_form_submission' ) );
 		add_action( 'admin_init', array( __CLASS__, 'handle_delete_action' ) );
@@ -42,15 +44,17 @@ class Openstream_Link_Shortener_Admin {
 	public static function register_menu() {
 		global $menu;
 
-		// Remove all menu items except Settings and Profile.
-		$keep = array( 'options-general.php', 'profile.php' );
-		foreach ( $menu as $key => $item ) {
-			if ( ! empty( $item[2] ) && ! in_array( $item[2], $keep, true ) ) {
-				remove_menu_page( $item[2] );
-			}
-			// Remove separators.
-			if ( isset( $item[4] ) && false !== strpos( $item[4], 'wp-menu-separator' ) ) {
-				unset( $menu[ $key ] );
+		if ( get_option( 'openstream_link_shortener_hide_menus', false ) ) {
+			// Remove all menu items except Settings and Profile.
+			$keep = array( 'options-general.php', 'profile.php' );
+			foreach ( $menu as $key => $item ) {
+				if ( ! empty( $item[2] ) && ! in_array( $item[2], $keep, true ) ) {
+					remove_menu_page( $item[2] );
+				}
+				// Remove separators.
+				if ( isset( $item[4] ) && false !== strpos( $item[4], 'wp-menu-separator' ) ) {
+					unset( $menu[ $key ] );
+				}
 			}
 		}
 
@@ -72,6 +76,10 @@ class Openstream_Link_Shortener_Admin {
 	 * @return void
 	 */
 	public static function redirect_dashboard() {
+		if ( ! get_option( 'openstream_link_shortener_hide_menus', false ) ) {
+			return;
+		}
+
 		global $pagenow;
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Just checking if a query var exists, no data processing.
@@ -79,6 +87,89 @@ class Openstream_Link_Shortener_Admin {
 			wp_safe_redirect( admin_url( 'admin.php?page=openstream-link-shortener' ) );
 			exit;
 		}
+	}
+
+	/**
+	 * Register the settings page under Settings.
+	 *
+	 * @return void
+	 */
+	public static function register_settings_page() {
+		add_options_page(
+			__( 'Link Shortener Settings', 'openstream-link-shortener' ),
+			__( 'Link Shortener', 'openstream-link-shortener' ),
+			'manage_options',
+			'openstream-link-shortener-settings',
+			array( __CLASS__, 'render_settings_page' )
+		);
+	}
+
+	/**
+	 * Register plugin settings.
+	 *
+	 * @return void
+	 */
+	public static function register_settings() {
+		register_setting(
+			'openstream_link_shortener_settings',
+			'openstream_link_shortener_hide_menus',
+			array(
+				'type'              => 'boolean',
+				'sanitize_callback' => 'rest_sanitize_boolean',
+				'default'           => false,
+			)
+		);
+
+		add_settings_section(
+			'openstream_link_shortener_general',
+			'',
+			'__return_null',
+			'openstream-link-shortener-settings'
+		);
+
+		add_settings_field(
+			'openstream_link_shortener_hide_menus',
+			__( 'Hide default menus', 'openstream-link-shortener' ),
+			array( __CLASS__, 'render_hide_menus_field' ),
+			'openstream-link-shortener-settings',
+			'openstream_link_shortener_general'
+		);
+	}
+
+	/**
+	 * Render the hide menus checkbox field.
+	 *
+	 * @return void
+	 */
+	public static function render_hide_menus_field() {
+		$value = get_option( 'openstream_link_shortener_hide_menus', false );
+		?>
+		<label for="openstream_link_shortener_hide_menus">
+			<input type="checkbox"
+				id="openstream_link_shortener_hide_menus"
+				name="openstream_link_shortener_hide_menus"
+				value="1"
+				<?php checked( $value ); ?>
+			/>
+			<?php esc_html_e( 'Remove all default WordPress admin menus except Settings and Profile', 'openstream-link-shortener' ); ?>
+		</label>
+		<p class="description">
+			<?php esc_html_e( 'Disable this when you need access to WordPress core menus (e.g., during initial setup).', 'openstream-link-shortener' ); ?>
+		</p>
+		<?php
+	}
+
+	/**
+	 * Render the settings page.
+	 *
+	 * @return void
+	 */
+	public static function render_settings_page() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( esc_html__( 'You do not have permission to access this page.', 'openstream-link-shortener' ) );
+		}
+
+		include OPENSTREAM_LINK_SHORTENER_PATH . 'views/settings-page.php';
 	}
 
 	/**

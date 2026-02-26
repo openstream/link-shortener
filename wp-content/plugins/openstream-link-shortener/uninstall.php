@@ -20,3 +20,4 @@ $wpdb->query(
 // phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange
 
 delete_option( 'openstream_link_shortener_db_version' );
+delete_option( 'openstream_link_shortener_hide_menus' );
