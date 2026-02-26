@@ -64,6 +64,12 @@ class Openstream_Link_Shortener_List_Table extends WP_List_Table {
 	 * @return void
 	 */
 	public function prepare_items() {
+		$this->_column_headers = array(
+			$this->get_columns(),
+			array(),
+			$this->get_sortable_columns(),
+		);
+
 		$per_page = 20;
 		$page     = $this->get_pagenum();
 
