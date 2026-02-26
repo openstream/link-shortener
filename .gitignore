@@ -13,6 +13,10 @@
 !wp-content/plugins/openstream-link-shortener/
 !wp-content/plugins/openstream-link-shortener/**
 
+# GitHub Actions
+!.github/
+!.github/**
+
 # ddev configuration
 !.ddev/
 !.ddev/**
