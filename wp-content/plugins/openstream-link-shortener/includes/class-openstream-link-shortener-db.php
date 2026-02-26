@@ -190,34 +190,57 @@ class Openstream_Link_Shortener_DB {
 		$allowed_orderby = array( 'slug', 'click_count', 'created_at' );
 		$orderby         = in_array( $args['orderby'], $allowed_orderby, true ) ? $args['orderby'] : 'created_at';
 		$order           = 'ASC' === strtoupper( $args['order'] ) ? 'ASC' : 'DESC';
-		$order_clause    = sanitize_sql_orderby( "{$orderby} {$order}" );
-
-		if ( false === $order_clause ) {
-			$order_clause = 'created_at DESC';
-		}
 
 		$offset = absint( ( absint( $args['page'] ) - 1 ) * absint( $args['per_page'] ) );
 
 		if ( ! empty( $args['search'] ) ) {
 			$like = '%' . $wpdb->esc_like( $args['search'] ) . '%';
+			if ( 'ASC' === $order ) {
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table.
+				return $wpdb->get_results(
+					$wpdb->prepare(
+						'SELECT * FROM %i WHERE slug LIKE %s OR destination_url LIKE %s ORDER BY %i ASC LIMIT %d OFFSET %d',
+						self::table_name(),
+						$like,
+						$like,
+						$orderby,
+						absint( $args['per_page'] ),
+						$offset
+					)
+				);
+			}
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table.
 			return $wpdb->get_results(
 				$wpdb->prepare(
-					"SELECT * FROM %i WHERE slug LIKE %s OR destination_url LIKE %s ORDER BY {$order_clause} LIMIT %d OFFSET %d", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $order_clause is sanitized via sanitize_sql_orderby().
+					'SELECT * FROM %i WHERE slug LIKE %s OR destination_url LIKE %s ORDER BY %i DESC LIMIT %d OFFSET %d',
 					self::table_name(),
 					$like,
 					$like,
+					$orderby,
 					absint( $args['per_page'] ),
 					$offset
 				)
 			);
 		}
 
+		if ( 'ASC' === $order ) {
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table.
+			return $wpdb->get_results(
+				$wpdb->prepare(
+					'SELECT * FROM %i ORDER BY %i ASC LIMIT %d OFFSET %d',
+					self::table_name(),
+					$orderby,
+					absint( $args['per_page'] ),
+					$offset
+				)
+			);
+		}
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table.
 		return $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT * FROM %i ORDER BY {$order_clause} LIMIT %d OFFSET %d", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $order_clause is sanitized via sanitize_sql_orderby().
+				'SELECT * FROM %i ORDER BY %i DESC LIMIT %d OFFSET %d',
 				self::table_name(),
+				$orderby,
 				absint( $args['per_page'] ),
 				$offset
 			)
