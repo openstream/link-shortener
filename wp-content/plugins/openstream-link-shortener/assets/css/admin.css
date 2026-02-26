@@ -1,0 +1,32 @@
+.openstream-shorten-form {
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	padding: 1px 20px 20px;
+	margin-top: 20px;
+	max-width: 800px;
+}
+
+.openstream-new-link-notice {
+	padding: 12px !important;
+}
+
+.openstream-new-link-notice .button {
+	margin-left: 8px;
+	vertical-align: baseline;
+}
+
+.openstream-copy-btn.copied {
+	color: #00a32a;
+}
+
+.column-short_url {
+	width: 35%;
+}
+
+.column-click_count {
+	width: 80px;
+}
+
+.column-created_at {
+	width: 160px;
+}

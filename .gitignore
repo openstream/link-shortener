@@ -1,0 +1,18 @@
+# Ignore everything
+*
+
+# But not these files/directories
+!.gitignore
+!LICENSE
+!README.md
+!CLAUDE.md
+
+# Allow the plugin directory
+!wp-content/
+!wp-content/plugins/
+!wp-content/plugins/openstream-link-shortener/
+!wp-content/plugins/openstream-link-shortener/**
+
+# ddev configuration
+!.ddev/
+!.ddev/**
