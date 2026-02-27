@@ -16,15 +16,16 @@ Self-hosted WordPress plugin that turns a dedicated WordPress installation into 
 wp-content/plugins/openstream-link-shortener/
 ├── openstream-link-shortener.php       # Main bootstrap
 ├── uninstall.php                       # Clean uninstall (drops table)
-├── readme.md                           # GitHub readme
+├── readme.txt                          # WordPress plugin directory readme
 ├── index.php                           # Silence is golden
 ├── includes/
 │   ├── class-openstream-link-shortener.php          # Core: rewrites & redirects
-│   ├── class-openstream-link-shortener-admin.php    # Admin: menu takeover, form handling
+│   ├── class-openstream-link-shortener-admin.php    # Admin: menu takeover, form handling, settings
 │   ├── class-openstream-link-shortener-db.php       # Database CRUD
 │   └── class-openstream-link-shortener-list-table.php # WP_List_Table for link list
 ├── views/
-│   └── admin-page.php                  # Main admin page template
+│   ├── admin-page.php                  # Main admin page template
+│   └── settings-page.php              # Settings page template
 └── assets/
     ├── css/admin.css                   # Admin styles
     └── js/admin.js                     # Copy-to-clipboard
@@ -77,3 +78,14 @@ curl -I https://opnstre.am.ddev.site/test-slug
 - **phpcs multi-line suppression**: Use `phpcs:disable`/`phpcs:enable` blocks instead of `phpcs:ignore` for multi-line `$wpdb` statements. `phpcs:ignore` only covers the next line.
 - **Clean uninstall**: drops the database table and deletes options on plugin deletion
 - **Plugin check target**: 0 errors, 0 warnings from `ddev wp plugin check openstream-link-shortener`
+
+## Versioning & Releases
+
+- Semantic versioning: `MAJOR.MINOR.PATCH` (e.g., 1.0.0, 1.0.1, 1.1.0)
+- Version must be updated in **three places** when bumping:
+  1. Plugin header `Version:` in `openstream-link-shortener.php`
+  2. `OPENSTREAM_LINK_SHORTENER_VERSION` constant in `openstream-link-shortener.php`
+  3. `Stable tag:` in `readme.txt`
+- Git tag format: `1.0.0` (no `v` prefix)
+- GitHub releases: `gh release create <tag> <zip> --title "<tag>" --notes "..."`
+- Zip is built from `wp-content/plugins/openstream-link-shortener/` with the plugin folder as root

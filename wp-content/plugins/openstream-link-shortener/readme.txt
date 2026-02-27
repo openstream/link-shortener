@@ -25,9 +25,10 @@ Features:
 * Admin UI with searchable, sortable link table
 * Copy-to-clipboard for short URLs
 * Admin-only — all functionality is in the WordPress admin; the frontend only handles redirects
+* Settings page to toggle hiding of default WordPress admin menus
 * Clean uninstall — removes all data when the plugin is deleted
 
-**Important:** This plugin is designed for a dedicated WordPress installation that serves only as a link shortener. It takes over the admin menu and dashboard. It does not create short links for posts or pages — it works as a standalone service.
+**Important:** This plugin is designed for a dedicated WordPress installation that serves only as a link shortener. It can optionally take over the admin menu and dashboard (Settings → Link Shortener). It does not create short links for posts or pages — it works as a standalone service.
 
 == Installation ==
 
@@ -40,3 +41,9 @@ Features:
 
 = 1.0.0 =
 * Initial release
+* Create short links with auto-generated or custom slugs
+* Click tracking
+* Searchable, sortable link table
+* Copy-to-clipboard for short URLs
+* Settings page to toggle hiding of default WordPress admin menus
+* Clean uninstall
