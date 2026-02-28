@@ -68,9 +68,16 @@ ddev wp db query "SELECT * FROM wp_openstream_links;"
 curl -I https://opnstre.am.ddev.site/test-slug
 ```
 
+## Production
+
+- **SSH**: `ssh sandbox@inn.host.ch -p 2121`
+- **WordPress root**: `/opnstre.am/`
+- **WP-CLI on production**: `ssh sandbox@inn.host.ch -p 2121 "cd /opnstre.am && wp <command>"`
+- **Deploy**: push to `main` triggers GitHub Actions (rsync + rewrite flush)
+
 ## Key Technical Decisions
 
-- **Rewrite rule**: `^([a-zA-Z0-9]+)/?$` — broad regex is safe because this is a dedicated installation
+- **Rewrite rule**: `^([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]|[a-zA-Z0-9])/?$` — allows dashes in custom slugs; broad regex is safe because this is a dedicated installation
 - **301 redirects**: permanent redirects, standard for link shorteners
 - **dbDelta()**: requires two spaces before PRIMARY KEY, each field on its own line
 - **%i placeholder**: WordPress 6.2+ identifier placeholder for table/column names in `$wpdb->prepare()`
