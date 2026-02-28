@@ -32,7 +32,7 @@ class Openstream_Link_Shortener {
 	 */
 	public static function register_rewrite_rules() {
 		add_rewrite_rule(
-			'^([a-zA-Z0-9]+)/?$',
+			'^([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]|[a-zA-Z0-9])/?$',
 			'index.php?openstream_slug=$matches[1]',
 			'top'
 		);

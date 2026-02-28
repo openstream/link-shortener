@@ -54,12 +54,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 						<label for="custom_slug"><?php esc_html_e( 'Custom Slug', 'openstream-link-shortener' ); ?></label>
 					</th>
 					<td>
-						<input type="text" id="custom_slug" name="custom_slug" class="regular-text" placeholder="<?php esc_attr_e( 'Optional — leave blank for auto-generated', 'openstream-link-shortener' ); ?>" pattern="[a-zA-Z0-9]+" />
+						<input type="text" id="custom_slug" name="custom_slug" class="regular-text" placeholder="<?php esc_attr_e( 'Optional — leave blank for auto-generated', 'openstream-link-shortener' ); ?>" pattern="[a-zA-Z0-9]([a-zA-Z0-9\-]*[a-zA-Z0-9])?" />
 						<p class="description">
 							<?php
 							printf(
 								/* translators: %s: example short URL */
-								esc_html__( 'Letters and numbers only. Example: %s', 'openstream-link-shortener' ),
+								esc_html__( 'Letters, numbers, and dashes. Example: %s', 'openstream-link-shortener' ),
 								'<code>' . esc_html( home_url( '/spotify' ) ) . '</code>'
 							);
 							?>

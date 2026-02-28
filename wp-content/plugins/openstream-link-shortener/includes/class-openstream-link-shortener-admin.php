@@ -205,11 +205,11 @@ class Openstream_Link_Shortener_Admin {
 		$custom_slug = isset( $_POST['custom_slug'] ) ? sanitize_title( wp_unslash( $_POST['custom_slug'] ) ) : '';
 
 		if ( ! empty( $custom_slug ) ) {
-			if ( ! preg_match( '/^[a-zA-Z0-9]+$/', $custom_slug ) ) {
+			if ( ! preg_match( '/^[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?$/', $custom_slug ) ) {
 				add_settings_error(
 					'openstream_link_shortener',
 					'invalid_slug',
-					__( 'Custom slug must contain only letters and numbers.', 'openstream-link-shortener' ),
+					__( 'Custom slug must contain only letters, numbers, and dashes, and cannot start or end with a dash.', 'openstream-link-shortener' ),
 					'error'
 				);
 				return;
