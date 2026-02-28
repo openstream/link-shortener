@@ -30,5 +30,4 @@ jobs:
         run: |
           ssh -i ~/.ssh/deploy_key -p ${{ secrets.SSH_PORT }} \
             ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} \
-            "cd ${{ secrets.DEPLOY_PATH }} && wp rewrite flush"
-        continue-on-error: true
+            "bash -l -c 'cd ${{ secrets.DEPLOY_PATH }} && wp rewrite flush'"
