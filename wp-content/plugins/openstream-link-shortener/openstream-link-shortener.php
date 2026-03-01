@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Openstream Link Shortener
  * Description: A self-hosted link shortener for a dedicated WordPress installation.
- * Version:     1.0.0
+ * Version:     1.1.0
  * Author:      Openstream
  * License:     GPL-2.0-or-later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'OPENSTREAM_LINK_SHORTENER_VERSION', '1.0.0' );
+define( 'OPENSTREAM_LINK_SHORTENER_VERSION', '1.1.0' );
 define( 'OPENSTREAM_LINK_SHORTENER_PATH', plugin_dir_path( __FILE__ ) );
 define( 'OPENSTREAM_LINK_SHORTENER_URL', plugin_dir_url( __FILE__ ) );
 
@@ -43,6 +43,7 @@ register_deactivation_hook(
 );
 
 Openstream_Link_Shortener::init();
+Openstream_Link_Shortener_DB::maybe_upgrade();
 
 if ( is_admin() ) {
 	Openstream_Link_Shortener_Admin::init();

@@ -19,7 +19,7 @@ class Openstream_Link_Shortener_DB {
 	 *
 	 * @var string
 	 */
-	const DB_VERSION = '1.0';
+	const DB_VERSION = '1.1';
 
 	/**
 	 * Get the full table name.
@@ -44,7 +44,7 @@ class Openstream_Link_Shortener_DB {
 
 		$sql = "CREATE TABLE {$table_name} (
 			id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-			slug varchar(20) NOT NULL,
+			slug varchar(255) NOT NULL,
 			destination_url text NOT NULL,
 			click_count bigint(20) unsigned NOT NULL DEFAULT 0,
 			created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -57,6 +57,17 @@ class Openstream_Link_Shortener_DB {
 		dbDelta( $sql );
 
 		update_option( 'openstream_link_shortener_db_version', self::DB_VERSION );
+	}
+
+	/**
+	 * Check if the database schema needs updating and run dbDelta if so.
+	 *
+	 * @return void
+	 */
+	public static function maybe_upgrade() {
+		if ( get_option( 'openstream_link_shortener_db_version' ) !== self::DB_VERSION ) {
+			self::create_table();
+		}
 	}
 
 	/**

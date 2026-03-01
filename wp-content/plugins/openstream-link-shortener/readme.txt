@@ -3,7 +3,7 @@ Contributors: openstream
 Tags: link shortener, short links, url shortener, redirects
 Requires at least: 6.7
 Tested up to: 6.9
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 Requires PHP: 8.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -38,6 +38,12 @@ Features:
 4. Ensure pretty permalinks are enabled (Settings → Permalinks)
 
 == Changelog ==
+
+= 1.1.0 =
+* Add settings page to toggle hiding of default WordPress admin menus
+* Allow dashes in custom short link slugs
+* Increase slug column from 20 to 255 characters with automatic migration
+* Add automatic rewrite flush on deploy
 
 = 1.0.0 =
 * Initial release
